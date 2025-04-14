@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PDR_Locator</string>
+    <string name="window_size_key">"windowSizeKey</string>
+    <string name="slide_step_key">slideStepKey</string>
+</resources>
