@@ -8,6 +8,9 @@ package com.example.pdr_locator.utils;
 
 import com.example.pdr_locator.model.Quat;
 
+import org.nd4j.linalg.api.ndarray.INDArray;
+import org.nd4j.linalg.factory.Nd4j;
+
 /**
  * QuaternionUtil 类提供与四元数相关的通用工具方法。
  */
@@ -65,5 +68,33 @@ public class QuaternionUtil {
         double pitch = Math.atan2(-grav[0], grav[2]); // 计算俯仰角
         double roll = Math.atan2(grav[1], Math.sqrt(grav[0] * grav[0] + grav[2] * grav[2])); // 计算横滚角
         return eulerToQuaternion(yaw, pitch, roll); // 转换为四元数
+    }
+
+    // 四元数旋转
+    public static INDArray rotateQuaternion(INDArray oriQ, INDArray inputQ) {
+        INDArray result = Nd4j.zeros(inputQ.shape());
+        for (int i = 0; i < inputQ.rows(); i++) {
+            double[] q = oriQ.getRow(i).toDoubleVector();
+            double[] p = inputQ.getRow(i).toDoubleVector();
+            // 四元数旋转公式：q * p * q^{-1}
+            double[] rotated = QuaternionUtil.multiplyQuaternion(q, QuaternionUtil.multiplyQuaternion(p, QuaternionUtil.inverseQuaternion(q)));
+            result.putRow(i, Nd4j.create(rotated));
+        }
+        return result;
+    }
+
+    // 四元数乘法
+    public static double[] multiplyQuaternion(double[] q1, double[] q2) {
+        double w = q1[0] * q2[0] - q1[1] * q2[1] - q1[2] * q2[2] - q1[3] * q2[3];
+        double x = q1[0] * q2[1] + q1[1] * q2[0] + q1[2] * q2[3] - q1[3] * q2[2];
+        double y = q1[0] * q2[2] - q1[1] * q2[3] + q1[2] * q2[0] + q1[3] * q2[1];
+        double z = q1[0] * q2[3] + q1[1] * q2[2] - q1[2] * q2[1] + q1[3] * q2[0];
+        return new double[]{w, x, y, z};
+    }
+
+    // 四元数逆
+    public static double[] inverseQuaternion(double[] q) {
+        double norm = q[0] * q[0] + q[1] * q[1] + q[2] * q[2] + q[3] * q[3];
+        return new double[]{q[0] / norm, -q[1] / norm, -q[2] / norm, -q[3] / norm};
     }
 }

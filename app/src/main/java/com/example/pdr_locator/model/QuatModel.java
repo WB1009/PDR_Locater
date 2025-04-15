@@ -24,21 +24,47 @@ import lombok.Setter;
 public class QuatModel {
     private Quat q;  // 四元数对象q
     private double halfT;  // 时间步长的一半
-    private double[][] A_matrix;  // 旋转矩阵，用于四元数更新
-    private List<Quat> q_list;  // 存储四元数历史记录的列表
+    private double[][] AMatrix;  // 旋转矩阵，用于四元数更新
+    private List<Quat> qList;  // 存储四元数历史记录的列表
+    private List<double[]> qArrayList; // 存储数组型四元数历史记录列表
 
     /**
-     * 构造函数，初始化四元数和相关参数。
+     * 构造函数1，初始化默认四元数model和相关参数。
      *
      * @param period 时间步长（秒）
      */
     public QuatModel(double period) {
         this.halfT = 0.5 * period; // 时间步长的一半
-        this.A_matrix = new double[4][4]; // 初始化旋转矩阵
+        this.AMatrix = new double[4][4]; // 初始化旋转矩阵
         this.q = new Quat(1.0, 0.0, 0.0, 0.0); // 默认四元数（单位四元数）
-        this.q_list = new ArrayList<>(); // 初始化四元数历史记录列表
+        this.qList = new ArrayList<>(); // 初始化四元数历史记录列表
+        this.qArrayList = new ArrayList<>(); // 初始化四元数数组历史记录
         this.q = QuaternionUtil.normalizeQuaternion(this.q); // 归一化四元数
     }
+
+    /**
+     * 构造函数2，初始化四元数model和相关参数
+     *
+     * @param period 时间步长（秒）
+     * @param q 四元数姿态Quat
+     */
+    public QuatModel(double period, Quat q) {
+        this.halfT = 0.5 * period; // 时间步长的一半
+        this.AMatrix = new double[4][4]; // 初始化旋转矩阵
+        this.q = q; // 传入四元数
+        this.qList = new ArrayList<>(); // 初始化四元数历史记录列表
+        this.qArrayList = new ArrayList<>(); // 初始化四元数数组历史记录
+        this.q = QuaternionUtil.normalizeQuaternion(this.q); // 归一化四元数
+    }
+
+    public List<Quat> getQList(){
+        return this.qList;
+    }
+
+    public List<double[]> getQArrayList(){
+        return this.qArrayList;
+    }
+
     /**
      * 根据输入的加速度计数据重置四元数。
      * 该方法用于初始化姿态估计。
@@ -86,7 +112,7 @@ public class QuatModel {
         double gz_ = gz * this.halfT;
 
         // 构造旋转矩阵
-        this.A_matrix = new double[][]{
+        this.AMatrix = new double[][]{
                 {1, -gx_, -gy_, -gz_},
                 {gx_, 1, gz_, -gy_},
                 {gy_, -gz_, 1, gx_},
@@ -98,7 +124,7 @@ public class QuatModel {
         for (int i = 0; i < 4; i++) {
             double[] qArray = q.toDoubleArray();
             for (int j = 0; j < 4; j++) {
-                newQ[i] += this.A_matrix[i][j] * qArray[j]; // 矩阵乘法
+                newQ[i] += this.AMatrix[i][j] * qArray[j]; // 矩阵乘法
             }
         }
 
@@ -112,10 +138,12 @@ public class QuatModel {
     public void saveQ() {
         if (q.getQw() > 0) {
             // 如果 w 分量为正，直接保存
-            q_list.add(q);
+            qList.add(q);
+            qArrayList.add(q.toDoubleArray());
         } else {
             // 如果 w 分量为负，保存其负值
-            q_list.add(q.navigateQuat());
+            qList.add(q.navigateQuat());
+            qArrayList.add(q.navigateQuat().toDoubleArray());
         }
     }
 

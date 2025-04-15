@@ -35,6 +35,7 @@ dependencies {
 
     implementation("org.pytorch:pytorch_android:1.13.1")
     implementation("org.pytorch:pytorch_android_torchvision:1.13.1")
+    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
     implementation(libs.projectlombok.lombok)
     annotationProcessor(libs.projectlombok.lombok)
 
