@@ -2,4 +2,20 @@
     <string name="app_name">PDR_Locator</string>
     <string name="window_size_key">"windowSizeKey</string>
     <string name="slide_step_key">slideStepKey</string>
+    <string name="algorithm_prompt">选择算法</string>
+    <string name="dimension_prompt">选择维度</string>
+    <string-array name="algorithms">
+        <item>随机游走</item>
+        <item>正弦波/螺旋线</item>
+        <item>圆形轨迹/3D正弦波</item>
+        <item>线性增长/3D平面</item>
+        <item>3D螺旋线</item>
+        <item>3D心形线</item>
+    </string-array>
+
+    <string-array name="dimensions">
+        <item>2D</item>
+        <item>3D</item>
+    </string-array>
+
 </resources>
