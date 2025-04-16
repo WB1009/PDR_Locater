@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- GraphView 固定在顶部 -->
+    <FrameLayout
+        android:id="@+id/visualization_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#FFFFFF">
+
+        <com.example.pdr_locator.view.GraphView
+            android:id="@+id/graph_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"/>
+
+        <com.example.pdr_locator.view.RajawaliGraphView
+            android:id="@+id/graph_3d_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/switch_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:text="switch"
+            android:visibility="gone"/>
+
+    </FrameLayout>
+
+    <!-- 底部控制面板 -->
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="选择维度"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/dimension_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/dimensions"
+                android:prompt="@string/dimension_prompt" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp"
+                android:text="选择算法"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/algorithm_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/algorithms"
+                android:prompt="@string/algorithm_prompt" />
+
+            <Button
+                android:id="@+id/start_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="开始" />
+
+            <Button
+                android:id="@+id/stop_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:enabled="false"
+                android:text="停止" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>
