@@ -39,7 +39,7 @@ public class PdrLocalOri implements IAlgorithm{
         this.firstWin = true;
         this.minVar = 1000;
         this.halfResetWindow = 25;
-        this.pxy = new double[]{0.0, 0.0};
+        this.pxy = new double[]{0.0, 0.0, 0,0};
     }
 
     /**
@@ -48,7 +48,7 @@ public class PdrLocalOri implements IAlgorithm{
      * @return 返回定位结果double[] (x,y)
      */
     @Override
-    public double[] getCoordinate(double[][] inputs){
+    public double[] getCoordinate(float[][] inputs){
         double[][] timestamp = getTimestamp(inputs);  // 时间戳
         double[][] accelerometerData = getAccelerometer(inputs);  //加速度计三轴数据
         double[][] gyroscopeData = getGyroscope(inputs);  // 陀螺仪三轴数据
@@ -148,7 +148,7 @@ public class PdrLocalOri implements IAlgorithm{
      *
      * @param inputs 输入的IMU数据（包括时间戳、加速度计三轴数据、陀螺仪三轴数据、磁力计三轴数据）
      */
-    private double[][] getTimestamp(double[][] inputs){
+    private double[][] getTimestamp(float[][] inputs){
         // 检查输入是否为空
         if (inputs == null || inputs.length == 0) {
             return new double[0][0];
@@ -175,7 +175,7 @@ public class PdrLocalOri implements IAlgorithm{
      *
      * @param inputs 输入的IMU数据（包括时间戳、加速度计三轴数据、陀螺仪三轴数据、磁力计三轴数据）
      */
-    private double[][] getAccelerometer(double[][] inputs){
+    private double[][] getAccelerometer(float[][] inputs){
         // 检查输入是否为空
         if (inputs == null || inputs.length == 0) {
             return new double[0][0];
@@ -204,7 +204,7 @@ public class PdrLocalOri implements IAlgorithm{
      *
      * @param inputs 输入的IMU数据（包括时间戳、加速度计三轴数据、陀螺仪三轴数据、磁力计三轴数据）
      */
-    private double[][] getGyroscope(double[][] inputs){
+    private double[][] getGyroscope(float[][] inputs){
         // 检查输入是否为空
         if (inputs == null || inputs.length == 0) {
             return new double[0][0];
@@ -233,7 +233,7 @@ public class PdrLocalOri implements IAlgorithm{
      *
      * @param inputs 输入的IMU数据（包括时间戳、加速度计三轴数据、陀螺仪三轴数据、磁力计三轴数据）
      */
-    private double[][] getMagnetometer(double[][] inputs){
+    private double[][] getMagnetometer(float[][] inputs){
         // 检查输入是否为空
         if (inputs == null || inputs.length == 0) {
             return new double[0][0];
@@ -267,7 +267,7 @@ class PDR{
     /**
      * 构造函数
      *
-     * @param modelName 选择的模型名称
+     * @param modelName 选择的模型文件名
      */
     public PDR(String modelName) {
         String modelPath = "../assets/" + modelName;  // 模型路径
