@@ -28,6 +28,7 @@ public class SlidingWindowManager {
     public SlidingWindowManager(int windowSize, int slideStep){
         this.WINDOW_SIZE = windowSize;
         this.SLIDE_STEP = slideStep;
+
     }
 
     /**

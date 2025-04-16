@@ -27,7 +27,7 @@ public class SensorDataCollector implements SensorEventListener {
     private final List<SensorType> sensorTypes; // 需要启用的传感器的类型
     private final List<ISensor> sensorList; // 启用的传感器列表
     private final SensorManager sensorManager; // 手机自带的传感器管理器
-    private final SlidingWindowManager slidingWindowManager; // 滑动窗口管理器工具，用于生成消息队列任务
+    public final SlidingWindowManager slidingWindowManager; // 滑动窗口管理器工具，用于生成消息队列任务
     private float[] latestAccelerometerData; // 最新的加速度计任务
     private float[] latestGyroscopeData; // 最新的陀螺仪数据
     private float[] latestMagnetometerData; // 最新的磁力计数据
