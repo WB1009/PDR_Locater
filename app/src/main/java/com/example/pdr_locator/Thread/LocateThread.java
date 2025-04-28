@@ -28,12 +28,16 @@ public class LocateThread extends Thread{
     public void run() {
         running = true;
         locator.onCreate();
-        while (running) {
-            try {
-                locator.locate();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                break;
+        if(!locator.getAlgorithmName().equals("CollectData")){
+            while (running) {
+                try {
+                    locator.locate();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

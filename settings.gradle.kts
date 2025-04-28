@@ -8,6 +8,8 @@ pluginManagement {
             }
         }
         mavenCentral()
+        // 国内镜像
+        maven(url = "https://maven.aliyun.com/repository/public")
         gradlePluginPortal()
     }
 }
@@ -16,6 +18,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        // 国内镜像
+        maven(url = "https://maven.aliyun.com/repository/public")
     }
 }
 

@@ -1,3 +1,5 @@
+import com.android.build.api.dsl.Packaging
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -26,18 +28,36 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
+//    packaging {
+//        resources.excludes.add("META-INF/native-image/**/jnijavacpp/jni-config.json")
+//        jniLibs.excludes.add("META-INF/native-image/**/jnijavacpp/jni-config.json")
+//    }
 }
 
 dependencies {
 
-    implementation("org.pytorch:pytorch_android:1.13.1")
-    implementation("org.pytorch:pytorch_android_torchvision:1.13.1")
-    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta7")
-    implementation(libs.projectlombok.lombok)
-    annotationProcessor(libs.projectlombok.lombok)
+//    implementation("org.deeplearning4j:deeplearning4j-core:1.0.0-beta6")
+
+//    implementation("org.ejml:ejml-all:0.43") // 替换为最新版本
+    implementation("org.rajawali3d:rajawali:1.1.970") // 替换为最新版本号
+
+    implementation("org.pytorch:pytorch_android_lite:1.13.0")
+    implementation("org.pytorch:pytorch_android_torchvision_lite:1.13.0")
+
+    compileOnly("org.projectlombok:lombok:1.18.32")
+    annotationProcessor("org.projectlombok:lombok:1.18.32")
+    testAnnotationProcessor("org.projectlombok:lombok:1.18.32")
+
+    implementation("org.slf4j:slf4j-api:2.0.9")
+    implementation("org.slf4j:slf4j-simple:2.0.9")
+
+//    implementation ("ai.onnxruntime:onnxruntime-android:1.15.1")
+    implementation("com.microsoft.onnxruntime:onnxruntime-android:1.16.0-rc1")
+    // PyTorch Android
+//    implementation("org.pytorch:pytorch_android:1.12.2")
 
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -46,3 +66,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 }
+
+

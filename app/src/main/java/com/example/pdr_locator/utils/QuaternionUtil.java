@@ -8,8 +8,6 @@ package com.example.pdr_locator.utils;
 
 import com.example.pdr_locator.model.Quat;
 
-import org.nd4j.linalg.api.ndarray.INDArray;
-import org.nd4j.linalg.factory.Nd4j;
 
 /**
  * QuaternionUtil 类提供与四元数相关的通用工具方法。
@@ -64,24 +62,12 @@ public class QuaternionUtil {
      * @param yaw  偏航角（弧度）
      * @return 计算后的四元数
      */
-    public static Quat getQFromGrav(double[] grav, double yaw) {
+    public static Quat getQFromGrav(float[] grav, double yaw) {
         double pitch = Math.atan2(-grav[0], grav[2]); // 计算俯仰角
         double roll = Math.atan2(grav[1], Math.sqrt(grav[0] * grav[0] + grav[2] * grav[2])); // 计算横滚角
         return eulerToQuaternion(yaw, pitch, roll); // 转换为四元数
     }
 
-    // 四元数旋转
-    public static INDArray rotateQuaternion(INDArray oriQ, INDArray inputQ) {
-        INDArray result = Nd4j.zeros(inputQ.shape());
-        for (int i = 0; i < inputQ.rows(); i++) {
-            double[] q = oriQ.getRow(i).toDoubleVector();
-            double[] p = inputQ.getRow(i).toDoubleVector();
-            // 四元数旋转公式：q * p * q^{-1}
-            double[] rotated = QuaternionUtil.multiplyQuaternion(q, QuaternionUtil.multiplyQuaternion(p, QuaternionUtil.inverseQuaternion(q)));
-            result.putRow(i, Nd4j.create(rotated));
-        }
-        return result;
-    }
 
     // 四元数乘法
     public static double[] multiplyQuaternion(double[] q1, double[] q2) {

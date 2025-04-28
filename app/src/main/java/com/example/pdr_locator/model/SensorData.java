@@ -15,10 +15,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class SensorData {
-    private long timestamp;  // 时间戳
-    private float[] accelerometerData; // 加速度计3轴数据
-    private float[] gyroscopeData;     // 陀螺仪3轴数据
-    private float[] magnetometerData;  // 磁力计3轴数据
+    private long timestamp = 0;  // 时间戳
+    private float[] accelerometerData = new float[]{0.0f, 0.0f, 0.0f}; // 加速度计3轴数据
+    private float[] gyroscopeData = new float[]{0.0f, 0.0f, 0.0f};;     // 陀螺仪3轴数据
+    private float[] magnetometerData = new float[]{0.0f, 0.0f, 0.0f};;  // 磁力计3轴数据
 
     /**
      * 构造函数
@@ -41,10 +41,20 @@ public class SensorData {
      */
     public float[] toFlatArray() {
         float[] result = new float[10];
-        result[0] = timestamp; // 时间戳放在最后一位
+        result[0] = timestamp; // 时间戳放在第一位
         System.arraycopy(accelerometerData, 0, result, 1, 3);
         System.arraycopy(gyroscopeData, 0, result, 4, 3);
         System.arraycopy(magnetometerData, 0, result, 7, 3);
         return result;
+    }
+
+    public String buildRowData() {
+        StringBuilder rowData = new StringBuilder();
+        rowData.append(timestamp);
+        for (float value : accelerometerData) rowData.append(",").append(value);
+        for (float value : gyroscopeData) rowData.append(",").append(value);
+        for (float value : magnetometerData) rowData.append(",").append(value);
+        rowData.append(System.lineSeparator());
+        return rowData.toString();
     }
 }

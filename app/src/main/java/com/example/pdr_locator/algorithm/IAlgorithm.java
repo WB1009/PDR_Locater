@@ -6,6 +6,10 @@ package com.example.pdr_locator.algorithm;
  * @Time: 17:00
  */
 
+import com.example.pdr_locator.model.SensorData;
+
+import java.util.List;
+
 /**
  * 定位算法接口
  */
@@ -15,5 +19,5 @@ public interface IAlgorithm {
      * @param input 输入IMU数据
      * @return 返回一次定位结果（x,y,z）
      */
-    double[] getCoordinate(float[][] input);
+    double[] getCoordinate(List<SensorData> input) throws Exception;
 }

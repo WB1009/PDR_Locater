@@ -6,7 +6,7 @@
     <string name="dimension_prompt">选择维度</string>
     <string-array name="algorithms">
         <item>PdrLocalOri</item>
-        <item>PdrBasic</item>
+        <item>CollectData</item>
         <item>PdrAdvanced</item>
         <item>PdrWithFilter</item>
     </string-array>

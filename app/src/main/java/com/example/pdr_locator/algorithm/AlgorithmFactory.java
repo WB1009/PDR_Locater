@@ -1,5 +1,6 @@
 package com.example.pdr_locator.algorithm;
 
+import android.content.Context;
 /**
  * @Author: Liu Wenbin
  * @Date: 2025/4/14
@@ -7,14 +8,18 @@ package com.example.pdr_locator.algorithm;
  */
 
 
+import java.net.ContentHandler;
+
 /**
  * 算法工厂类，根据算法名称返回定位算法对象
  */
 public class AlgorithmFactory {
-    public static IAlgorithm createAlgorithm(String algorithmName) {
+    public static IAlgorithm createAlgorithm(Context context,String algorithmName) {
         switch (algorithmName) {
             case "PdrLocalOri":
-                return new PdrLocalOri("gru.pt"); // 假设 PDRAlgorithm 是你的 PDR 算法类
+                return new PdrLocalOri(context, "gru.onnx");
+            case "CollectData":
+                return new CollectData();
             default:
                 throw new IllegalArgumentException("Unknown algorithm: " + algorithmName);
         }
