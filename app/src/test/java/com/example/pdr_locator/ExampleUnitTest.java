@@ -1,6 +1,7 @@
 package com.example.pdr_locator;
 
 import org.junit.Test;
+import org.nd4j.linalg.factory.Nd4j;
 
 import static org.junit.Assert.*;
 
@@ -12,6 +13,5 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
     }
 }

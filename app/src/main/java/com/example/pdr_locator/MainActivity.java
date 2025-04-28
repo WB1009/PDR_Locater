@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.view.View;
@@ -14,6 +15,10 @@ import com.example.pdr_locator.Thread.LocateThread;
 import com.example.pdr_locator.Thread.Locator;
 import com.example.pdr_locator.view.GraphView;
 import com.example.pdr_locator.view.RajawaliGraphView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 /**
  * @Author: Liu Wenbin
@@ -36,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
     private int selectedDimension = 0; // 0=2D, 1=3D
     private boolean isLocating = false;
+    private String algorithm;
 
     // 我的定位结果放在这个mHandler里，就是这个coordinate，它是double[3],[x,y,z],在这里调用你的更新UI的函数
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
@@ -56,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         graphView = findViewById(R.id.graph_view); // 2D图形视图
         graph3DView = findViewById(R.id.graph_3d_view); // 3D图形视图
         graph3DView.setClickable(true);
@@ -95,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         algorithmSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String algorithm = getAlgorithmName(position);
+                algorithm = getAlgorithmName(position);
                 locator.setAlgorithm(algorithm);
                 locator.setHandler(mHandler);
                 clearGraphs();
@@ -143,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     private String getAlgorithmName(int position) {
         switch (position) {
             case 0: return "PdrLocalOri";
-            case 1: return "PdrBasic";
+            case 1: return "CollectData";
             case 2: return "PdrAdvanced";
             case 3: return "PdrWithFilter";
             default: return "PdrLocalOri";
@@ -158,6 +165,9 @@ public class MainActivity extends AppCompatActivity {
     private void startLocating() {
         isLocating = true;
         clearGraphs();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        String fileName = "IMU_Data_" + algorithm + sdf.format(new Date()) + ".csv";
+        locator.setFileWriter(fileName);
         locateThread = new LocateThread(locator);
         locateThread.start();
     }
@@ -238,6 +248,4 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
         stopLocating();
     }
-
-
 }

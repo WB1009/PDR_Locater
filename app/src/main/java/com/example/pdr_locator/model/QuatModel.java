@@ -71,21 +71,23 @@ public class QuatModel {
      *
      * @param data 输入的加速度计数据（多个样本）
      */
-    public void reset_q(double[][] data) {
+    public void reset_q(float[][] data) {
         // 计算加速度计数据的平均值
-        double[] grav = new double[3];
+        float[] grav = new float[3];
         for (int i = 0; i < 3; i++) {
             double sum = 0.0;
-            for (double[] datum : data) {
+            for (float[] datum : data) {
                 sum += datum[i];
             }
-            grav[i] = sum / data.length; // 平均值
+            grav[i] = (float) (sum / data.length); // 平均值
         }
 
         // 归一化重力方向
         double norm = Math.sqrt(grav[0] * grav[0] + grav[1] * grav[1] + grav[2] * grav[2]);
-        for (int i = 0; i < 3; i++) {
-            grav[i] /= norm;
+        if(norm != 0.0){
+            for (int i = 0; i < 3; i++) {
+                grav[i] /= norm;
+            }
         }
 
         // 计算偏航角（yaw）
@@ -122,13 +124,13 @@ public class QuatModel {
         // 使用旋转矩阵更新四元数
         double[] newQ = new double[4];
         for (int i = 0; i < 4; i++) {
-            double[] qArray = q.toDoubleArray();
+            double[] qArray = this.q.toDoubleArray();
             for (int j = 0; j < 4; j++) {
                 newQ[i] += this.AMatrix[i][j] * qArray[j]; // 矩阵乘法
             }
         }
 
-        q = new Quat(newQ);
+        this.q = new Quat(newQ);
     }
 
     /**
@@ -153,7 +155,7 @@ public class QuatModel {
      *
      * @param data 输入数据（时间步长、陀螺仪 x、y、z）
      */
-    public void update(double[] data) {
+    public void update(float[] data) {
         // 调用 priori 方法进行预测
         priori(data[0], data[1], data[2], data[3]);
         // 归一化四元数

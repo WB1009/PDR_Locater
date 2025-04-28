@@ -7,7 +7,10 @@ package com.example.pdr_locator.utils;
  */
 import com.example.pdr_locator.model.SensorData;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -17,8 +20,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class SlidingWindowManager {
     private final int WINDOW_SIZE; // 窗口大小
     private final int SLIDE_STEP;  // 滑动步长
-    private Queue<float[]> dataBuffer = new LinkedList<>(); // 数据缓冲区
-    private LinkedBlockingQueue<float[][]> taskQueue = new LinkedBlockingQueue<>(); // 任务队列
+    private Queue<SensorData> dataBuffer = new LinkedList<>(); // 数据缓冲区
+    private LinkedBlockingQueue<List<SensorData>> taskQueue = new LinkedBlockingQueue<>(); // 任务队列
 
     /**
      * 构造函数，初始化滑动窗口管理器的窗口大小和滑动步长
@@ -35,7 +38,7 @@ public class SlidingWindowManager {
      * 将最新采集到的IMU数据添加到数据缓冲区，并且当数据达到窗口大小时则生成一个任务
      * @param data double[10],一条数据，包括timepstamp(时间戳), 加速度计x,y,z, 陀螺仪x,y,z, 磁力计x,y,z
      */
-    public synchronized void addData(float[] data) {
+    public synchronized void addData(SensorData data) {
         dataBuffer.add(data);
 
         // 当数据足够形成一个窗口时，生成任务
@@ -50,9 +53,14 @@ public class SlidingWindowManager {
     private synchronized void generateTask() {
         int startIndex = 0;  // 数据遍历的开始下标
         while (startIndex + WINDOW_SIZE <= dataBuffer.size()) {
-            float[][] windowData = new float[WINDOW_SIZE][];
-            for (int i = 0; i < WINDOW_SIZE; i++) {
-                windowData[i] = dataBuffer.toArray(new float[0][])[startIndex + i];
+//            float[][] windowData = new float[WINDOW_SIZE][];
+            List<SensorData> windowData = new ArrayList<>();
+            int count = 0;
+            Iterator<SensorData> iterator = dataBuffer.iterator();
+            while (count < WINDOW_SIZE && iterator.hasNext()) {
+                SensorData data = iterator.next();
+                windowData.add(data);
+                count++;
             }
             taskQueue.add(windowData);
             startIndex += SLIDE_STEP;
@@ -69,7 +77,7 @@ public class SlidingWindowManager {
      * @return float[][] 一个任务，即包含一个窗口大小长度的数据，一行为一条数据
      * @throws InterruptedException 可能抛出InterruptedException
      */
-    public float[][] getTask() throws InterruptedException {
+    public List<SensorData> getTask() throws InterruptedException {
         return taskQueue.take();
     }
 }
