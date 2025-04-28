@@ -62,6 +62,11 @@ public class PdrLocalOri implements IAlgorithm{
         return pxy;
     }
 
+    @Override
+    public void reset(){
+        this.pxy = new double[]{0.0, 0.0, 0.0};
+    }
+
     /**
      * 根据IMU数据预测速度vx和vy
      * @param time double[][] 二维数组，windowSize行，时间戳

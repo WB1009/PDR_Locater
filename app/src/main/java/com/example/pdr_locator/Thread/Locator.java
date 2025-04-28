@@ -137,6 +137,7 @@ public class Locator {
      * 数据采集器停止
      */
     public void onDestroy() {
+        algorithm.reset();  // 定位器重置定位结果
         collector.stopCollecting(); // 卸载传感器
     }
 }
