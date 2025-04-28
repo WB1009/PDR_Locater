@@ -124,18 +124,18 @@ public class RajawaliLineRenderer extends Renderer {
         float arrowSize = 1.0f; // 箭头大小
         float labelOffset = 1.5f;
 
-        // 创建坐标轴点集
+        // 创建坐标轴点集 - 交换Y和Z轴
         Stack<Vector3> xAxisPoints = new Stack<>();
         xAxisPoints.add(new Vector3(-axisLength, 0, 0));
         xAxisPoints.add(new Vector3(axisLength, 0, 0));
 
         Stack<Vector3> yAxisPoints = new Stack<>();
-        yAxisPoints.add(new Vector3(0, -axisLength, 0));
-        yAxisPoints.add(new Vector3(0, axisLength, 0));
+        yAxisPoints.add(new Vector3(0, 0, -axisLength));  // 原来的Z轴
+        yAxisPoints.add(new Vector3(0, 0, axisLength));
 
         Stack<Vector3> zAxisPoints = new Stack<>();
-        zAxisPoints.add(new Vector3(0, 0, -axisLength));
-        zAxisPoints.add(new Vector3(0, 0, axisLength));
+        zAxisPoints.add(new Vector3(0, -axisLength, 0));  // 原来的Y轴
+        zAxisPoints.add(new Vector3(0, axisLength, 0));
 
         // X轴 (红色)
         Line3D xAxis = new Line3D(xAxisPoints, axisThickness, Color.RED);
@@ -145,53 +145,53 @@ public class RajawaliLineRenderer extends Renderer {
         // X轴箭头
         Stack<Vector3> xArrowPoints = new Stack<>();
         xArrowPoints.add(new Vector3(axisLength, 0, 0));
-        xArrowPoints.add(new Vector3(axisLength - arrowSize, arrowSize, 0));
+        xArrowPoints.add(new Vector3(axisLength - arrowSize, 0, arrowSize));  // 交换Y和Z
         xArrowPoints.add(new Vector3(axisLength, 0, 0));
-        xArrowPoints.add(new Vector3(axisLength - arrowSize, -arrowSize, 0));
+        xArrowPoints.add(new Vector3(axisLength - arrowSize, 0, -arrowSize)); // 交换Y和Z
         xArrowPoints.add(new Vector3(axisLength, 0, 0));
-        xArrowPoints.add(new Vector3(axisLength - arrowSize, 0, arrowSize));
+        xArrowPoints.add(new Vector3(axisLength - arrowSize, arrowSize, 0));  // 交换Y和Z
         Line3D xArrow = new Line3D(xArrowPoints, axisThickness, Color.RED);
         xArrow.setMaterial(new Material());
         getCurrentScene().addChild(xArrow);
 
-        // Y轴 (绿色)
+        // Y轴 (绿色) - 现在是原来的Z轴
         Line3D yAxis = new Line3D(yAxisPoints, axisThickness, Color.GREEN);
         yAxis.setMaterial(new Material());
         getCurrentScene().addChild(yAxis);
 
         // Y轴箭头
         Stack<Vector3> yArrowPoints = new Stack<>();
-        yArrowPoints.add(new Vector3(0, axisLength, 0));
-        yArrowPoints.add(new Vector3(arrowSize, axisLength - arrowSize, 0));
-        yArrowPoints.add(new Vector3(0, axisLength, 0));
-        yArrowPoints.add(new Vector3(-arrowSize, axisLength - arrowSize, 0));
-        yArrowPoints.add(new Vector3(0, axisLength, 0));
-        yArrowPoints.add(new Vector3(0, axisLength - arrowSize, arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, axisLength));
+        yArrowPoints.add(new Vector3(arrowSize, 0, axisLength - arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, axisLength));
+        yArrowPoints.add(new Vector3(-arrowSize, 0, axisLength - arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, axisLength));
+        yArrowPoints.add(new Vector3(0, arrowSize, axisLength - arrowSize));
         Line3D yArrow = new Line3D(yArrowPoints, axisThickness, Color.GREEN);
         yArrow.setMaterial(new Material());
         getCurrentScene().addChild(yArrow);
 
-        // Z轴 (蓝色)
+        // Z轴 (蓝色) - 现在是原来的Y轴
         Line3D zAxis = new Line3D(zAxisPoints, axisThickness, Color.BLUE);
         zAxis.setMaterial(new Material());
         getCurrentScene().addChild(zAxis);
 
         // Z轴箭头
         Stack<Vector3> zArrowPoints = new Stack<>();
-        zArrowPoints.add(new Vector3(0, 0, axisLength));
-        zArrowPoints.add(new Vector3(0, arrowSize, axisLength - arrowSize));
-        zArrowPoints.add(new Vector3(0, 0, axisLength));
-        zArrowPoints.add(new Vector3(0, -arrowSize, axisLength - arrowSize));
-        zArrowPoints.add(new Vector3(0, 0, axisLength));
-        zArrowPoints.add(new Vector3(arrowSize, 0, axisLength - arrowSize));
+        zArrowPoints.add(new Vector3(0, axisLength, 0));
+        zArrowPoints.add(new Vector3(0, axisLength - arrowSize, arrowSize));
+        zArrowPoints.add(new Vector3(0, axisLength, 0));
+        zArrowPoints.add(new Vector3(0, axisLength - arrowSize, -arrowSize));
+        zArrowPoints.add(new Vector3(0, axisLength, 0));
+        zArrowPoints.add(new Vector3(arrowSize, axisLength - arrowSize, 0));
         Line3D zArrow = new Line3D(zArrowPoints, axisThickness, Color.BLUE);
         zArrow.setMaterial(new Material());
         getCurrentScene().addChild(zArrow);
 
-        // xyz轴的标签
+        // 更新标签位置 - 交换Y和Z
         addAxisLabel("X", axisLength - labelOffset, 0, 0, Color.RED);
-        addAxisLabel("Y", 0, axisLength - labelOffset, 0, Color.GREEN);
-        addAxisLabel("Z", 0, 0, axisLength - labelOffset, Color.BLUE);
+        addAxisLabel("Y", 0, 0, axisLength - labelOffset, Color.GREEN);  // 原来的Z标签
+        addAxisLabel("Z", 0, axisLength - labelOffset, 0, Color.BLUE);   // 原来的Y标签
     }
 
     /**
@@ -202,7 +202,8 @@ public class RajawaliLineRenderer extends Renderer {
      * @param z z坐标
      */
     public void addPoint(float x, float y, float z) {
-        Vector3 newPoint = new Vector3(x, y, z);
+        // 交换Y和Z坐标
+        Vector3 newPoint = new Vector3(x, z, y);  // 注意这里交换了y和z
         points.add(newPoint);
 
         if (points.size() > 1) {
@@ -215,7 +216,7 @@ public class RajawaliLineRenderer extends Renderer {
             Line3D segment = new Line3D(
                     segmentPoints,
                     lineThickness,
-                    getColorForDepth(z)
+                    getColorForDepth(y)  // 使用原来的Y坐标作为深度
             );
             segment.setMaterial(lineMaterial);
             getCurrentScene().addChild(segment);
@@ -226,13 +227,13 @@ public class RajawaliLineRenderer extends Renderer {
     /**
      * 根据深度获取颜色
      *
-     * @param z 深度值
+     * @param y 深度值
      * @return int 计算出的颜色值
      */
-    private int getColorForDepth(float z) {
-        float normalizedZ = (z + 10) / 20;
-        int r = (int) (255 * normalizedZ);
-        int b = (int) (255 * (1 - normalizedZ));
+    private int getColorForDepth(float y) {  // 参数名改为y，因为现在深度基于Y坐标
+        float normalizedY = (y + 10) / 20;
+        int r = (int) (255 * normalizedY);
+        int b = (int) (255 * (1 - normalizedY));
         return Color.rgb(r, 100, b);
     }
 
