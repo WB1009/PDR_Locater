@@ -20,4 +20,5 @@ public interface IAlgorithm {
      * @return 返回一次定位结果（x,y,z）
      */
     double[] getCoordinate(List<SensorData> input) throws Exception;
+    void reset();
 }

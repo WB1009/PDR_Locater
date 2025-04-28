@@ -18,4 +18,7 @@ public class CollectData implements IAlgorithm{
     public double[] getCoordinate(List<SensorData> input) throws Exception{
         return new double[]{0.0, 0.0, 0.0};
     }
+    @Override
+    public void reset(){
+    }
 }
