@@ -16,6 +16,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        ndk {
+//            abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86", "x86_64")) // 同时支持32和64位
+            // 或仅支持64位（推荐上架Google Play）：
+             abiFilters.addAll(listOf("arm64-v8a", "x86_64"))
+        }
+
     }
 
     buildTypes {
