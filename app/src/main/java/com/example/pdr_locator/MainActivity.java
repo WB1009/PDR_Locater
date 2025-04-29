@@ -1,5 +1,6 @@
 package com.example.pdr_locator;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 切换按钮
         switchButton.setOnClickListener(v -> {
-            graph3DView.notIsAutoRotate();
+            graph3DView.notIsAutoRotate(); // 切换旋转状态
         });
 
         // 初始状态
@@ -155,6 +156,13 @@ public class MainActivity extends AppCompatActivity {
             case 3: return "PdrWithFilter";
             default: return "PdrLocalOri";
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // 横竖屏切换时不会重建 Activity，算法继续运行
+        // 如果需要调整布局，可以在这里手动更新 UI
     }
 
     /*

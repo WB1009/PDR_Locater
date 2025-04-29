@@ -292,11 +292,10 @@ public class RajawaliLineRenderer extends Renderer {
             case MotionEvent.ACTION_DOWN:
                 lastTouchX = x;
                 lastTouchY = y;
-                isAutoRotate = false;
+                isAutoRotate = false; // 手动触摸时停止自动旋转
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
-                // 多点触控开始，记录初始距离
                 if (event.getPointerCount() >= 2) {
                     float x1 = event.getX(0);
                     float y1 = event.getY(0);
@@ -308,7 +307,7 @@ public class RajawaliLineRenderer extends Renderer {
 
             case MotionEvent.ACTION_MOVE:
                 if (event.getPointerCount() >= 2) {
-                    // 多点触控缩放
+                    // 处理缩放逻辑
                     float x1 = event.getX(0);
                     float y1 = event.getY(0);
                     float x2 = event.getX(1);
@@ -320,24 +319,21 @@ public class RajawaliLineRenderer extends Renderer {
                         mScaleFactor *= scale;
                         mScaleFactor = Math.max(MIN_SCALE, Math.min(mScaleFactor, MAX_SCALE));
 
-                        // 应用缩放
                         getCurrentCamera().setFieldOfView(60.0 / mScaleFactor);
                     }
                     mPreviousScale = currentScale;
                 } else {
-                    // 单点触控旋转
+                    // 处理旋转逻辑
                     float dx = x - lastTouchX;
                     float dy = y - lastTouchY;
 
-                    // 计算旋转角度和轴
                     double angle = Math.sqrt(dx * dx + dy * dy) * 0.5;
                     Vector3 axis = new Vector3(dy, dx, 0);
 
-                    // 根据手势旋转
                     getCurrentCamera().rotateAround(
-                            Vector3.ZERO,  // 旋转中心点（原点）
-                            angle,         // 旋转角度
-                            true           // 是否使用局部坐标系
+                            Vector3.ZERO,
+                            angle,
+                            true
                     );
 
                     lastTouchX = x;
@@ -346,28 +342,20 @@ public class RajawaliLineRenderer extends Renderer {
                 break;
 
             case MotionEvent.ACTION_POINTER_UP:
-                // 多点触控结束，重置初始距离
                 if (event.getPointerCount() == 2) {
                     mPreviousScale = -1.0f;
                 }
                 break;
 
-            case MotionEvent.ACTION_UP:
-            case MotionEvent.ACTION_CANCEL:
-                isAutoRotate = true;
-                break;
+            // 移除 ACTION_UP 和 ACTION_CANCEL 的自动恢复旋转逻辑
+            // 这样手动操作后不会自动恢复旋转
         }
     }
 
     /**
      * 切换自动旋转状态
      */
-    public void notIsAutoRotate(){
-        if (isAutoRotate){
-            isAutoRotate = false;
-        }
-        else{
-            isAutoRotate = true;
-        }
+    public void notIsAutoRotate() {
+        isAutoRotate = !isAutoRotate; // 直接切换状态
     }
 }
