@@ -40,8 +40,8 @@ public class GraphView extends View {
 
     private float scaleFactor = 1.0f; // 当前缩放因子
     private ScaleGestureDetector scaleGestureDetector; // 缩放手势检测器
-    private static final float MIN_SCALE = 0.5f; // 最小缩放比例
-    private static final float MAX_SCALE = 5.0f; // 最大缩放比例
+    private static final float MIN_SCALE = 0.02f; // 最小缩放比例
+    private static final float MAX_SCALE = 10.0f; // 最大缩放比例
 
     /**
      * 构造方法1：通过代码创建视图时调用

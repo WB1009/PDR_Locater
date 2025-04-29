@@ -39,7 +39,7 @@ public class RajawaliLineRenderer extends Renderer {
     private float mPreviousScale = 1.0f; // 上次的缩放比例
     private float mScaleFactor = 1.0f; // 当前缩放因子
     private static final float MIN_SCALE = 0.2f; // 最小缩放比例
-    private static final float MAX_SCALE = 3.0f; // 最大缩放比例
+    private static final float MAX_SCALE = 20.0f; // 最大缩放比例
     private Vector3 mOriginOffset = new Vector3(0, 0, 0); // 原点偏移量
     private boolean mIsDragging = false; // 是否正在拖动
     private static final float DRAG_SENSITIVITY = 0.02f; // 拖动灵敏度
@@ -119,7 +119,7 @@ public class RajawaliLineRenderer extends Renderer {
      * 创建坐标轴
      */
     private void createCoordinateAxes() {
-        float axisLength = 6;
+        float axisLength = 20;
         float axisThickness = 2.5f;
         float arrowSize = 1.0f; // 箭头大小
         float labelOffset = 1.5f;
@@ -130,8 +130,8 @@ public class RajawaliLineRenderer extends Renderer {
         xAxisPoints.add(new Vector3(axisLength, 0, 0));
 
         Stack<Vector3> yAxisPoints = new Stack<>();
-        yAxisPoints.add(new Vector3(0, 0, -axisLength));  // 原来的Z轴
-        yAxisPoints.add(new Vector3(0, 0, axisLength));
+        yAxisPoints.add(new Vector3(0, 0, axisLength));  // 原来的Z轴
+        yAxisPoints.add(new Vector3(0, 0, -axisLength));
 
         Stack<Vector3> zAxisPoints = new Stack<>();
         zAxisPoints.add(new Vector3(0, -axisLength, 0));  // 原来的Y轴
@@ -161,12 +161,12 @@ public class RajawaliLineRenderer extends Renderer {
 
         // Y轴箭头
         Stack<Vector3> yArrowPoints = new Stack<>();
-        yArrowPoints.add(new Vector3(0, 0, axisLength));
-        yArrowPoints.add(new Vector3(arrowSize, 0, axisLength - arrowSize));
-        yArrowPoints.add(new Vector3(0, 0, axisLength));
-        yArrowPoints.add(new Vector3(-arrowSize, 0, axisLength - arrowSize));
-        yArrowPoints.add(new Vector3(0, 0, axisLength));
-        yArrowPoints.add(new Vector3(0, arrowSize, axisLength - arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, -axisLength));
+        yArrowPoints.add(new Vector3(arrowSize, 0, -axisLength + arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, -axisLength));
+        yArrowPoints.add(new Vector3(-arrowSize, 0, -axisLength + arrowSize));
+        yArrowPoints.add(new Vector3(0, 0, -axisLength));
+        yArrowPoints.add(new Vector3(0, arrowSize, -axisLength + arrowSize));
         Line3D yArrow = new Line3D(yArrowPoints, axisThickness, Color.GREEN);
         yArrow.setMaterial(new Material());
         getCurrentScene().addChild(yArrow);
@@ -190,7 +190,7 @@ public class RajawaliLineRenderer extends Renderer {
 
         // 更新标签位置 - 交换Y和Z
         addAxisLabel("X", axisLength - labelOffset, 0, 0, Color.RED);
-        addAxisLabel("Y", 0, 0, axisLength - labelOffset, Color.GREEN);  // 原来的Z标签
+        addAxisLabel("Y", 0, 0, -axisLength + labelOffset, Color.GREEN);  // 原来的Z标签
         addAxisLabel("Z", 0, axisLength - labelOffset, 0, Color.BLUE);   // 原来的Y标签
     }
 
@@ -203,7 +203,7 @@ public class RajawaliLineRenderer extends Renderer {
      */
     public void addPoint(float x, float y, float z) {
         // 交换Y和Z坐标
-        Vector3 newPoint = new Vector3(x, z, y);  // 注意这里交换了y和z
+        Vector3 newPoint = new Vector3(x, z, -y);  // 注意这里交换了y和z
         points.add(newPoint);
 
         if (points.size() > 1) {
