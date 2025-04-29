@@ -95,7 +95,7 @@ public class RajawaliGraphView extends SurfaceView {
     public boolean onTouchEvent(MotionEvent event) {
         if (renderer != null) {
             renderer.onTouchEvent(event);
-            return true; // 表示事件已处理
+            return true; // 确保事件被消费
         }
         return super.onTouchEvent(event);
     }
