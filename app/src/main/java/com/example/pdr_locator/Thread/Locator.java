@@ -1,14 +1,9 @@
 package com.example.pdr_locator.Thread;
 
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 
 import com.example.pdr_locator.algorithm.AlgorithmFactory;
 import com.example.pdr_locator.algorithm.IAlgorithm;
@@ -20,9 +15,7 @@ import com.example.pdr_locator.utils.SlidingWindowManager;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
