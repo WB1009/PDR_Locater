@@ -52,7 +52,7 @@ public class PdrLocalOri implements IAlgorithm{
         float[] vxy = getVxy(timestamp, accelerometerData, gyroscopeData);  // 测得此时的x、y轴方向的速度
 
         Log.d("vxy", Arrays.toString(vxy));
-        double timeDiff = (timestamp[timestamp.length-1][0] - timestamp[0][0])/1000.0;  // 窗口时间
+        double timeDiff = (timestamp[timestamp.length-1][0] - timestamp[40][0])/1000.0;  // 窗口时间
         Log.d("timeDiff", String.valueOf(timeDiff));
         if(!Float.isInfinite(vxy[0]) && !Float.isInfinite(vxy[1]) && !Float.isNaN(vxy[0]) && !Float.isNaN(vxy[1])){
             pxy[0] = pxy[0] + vxy[0]*timeDiff;  // 计算当前坐标x
